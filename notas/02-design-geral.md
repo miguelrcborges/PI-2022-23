@@ -20,3 +20,12 @@ dos dispositivos ao servidor.
 
 O servidor vai ser escrito em Go. É uma linguagem simples de trabalhar, e que
 na sua standard library ferramentas necessárias para o desenvolvimento.
+
+O servidor vai comunicar com com os dispositivos em UDP, devido a estes
+permitirem uma menor latência, menor processamento e implementação mais
+simples.
+
+Para permitir a monitorização do sistema, o servido será também um webserver,
+permitindo interagir com o sistema apartir de um browser.
+
+[Protótipo inicial do funcionamento do webserver](https://www.youtube.com/watch?v=2LENk7Q0V-c)
