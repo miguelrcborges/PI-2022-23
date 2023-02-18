@@ -1,13 +1,13 @@
 package main
 
 type position struct {
-	x, y float64
+	X, Y float64
 }
 
-type userDetails struct {
-	position position
-	target position
-	angle float64
+type deviceDetails struct {
+	Position position
+	Target position
+	Angle float64
 }
 
-type devicesMap map[int64]*userDetails
+type devicesMap map[string]*deviceDetails
