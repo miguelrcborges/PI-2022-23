@@ -17,3 +17,9 @@ Com esta alteração, os endpoints do webserver foram comentados, uma vez
 que não representa a melhor forma do dispositivo, mas sim devem ser clientes
 a comunicar em UDP com o servidor, da mesma forma os dispositivos iram 
 o fazer.
+
+### EDIT
+
+Estive a melhorar o UI, e agora tenho uma repesentação melhor da situação
+(tive de incluir as portas no IP uma vez que o IP é sempre o mesmo).
+[Link](https://www.youtube.com/watch?v=IV-SHyz7uKo)

@@ -46,3 +46,39 @@ button {
     cursor: pointer;
   }
 }
+
+table {
+  margin: 50px auto;
+}
+
+th, td {
+  padding: 1rem 2rem;
+}
+
+thead tr {
+  border: 1px solid var(--fg);
+}
+
+.near {
+  box-shadow: 3px 6px 12px #000;
+}
+
+.near-text {
+  text-shadow: 3px 6px 12px #000;
+}
+
+.middle-distance {
+  box-shadow: 2px 4px 8px #000;
+}
+
+.middle-text {
+  text-shadow: 2px 4px 8px #000;
+}
+
+.far {
+  box-shadow: 1px 2px 4px #000;
+}
+
+.far-text {
+  text-shadow: 1px 2px 4px #000;
+}
