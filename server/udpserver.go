@@ -4,7 +4,7 @@ import (
 	"net"
 	"os"
 	"fmt"
-	"strings"
+	//"strings"
 )
 
 func startUdp() {
@@ -24,7 +24,8 @@ func startUdp() {
 			os.Exit(3)
 		}
 
-		ip := strings.Split(addr.String(), ":")[0]
+		//ip := strings.Split(addr.String(), ":")[0]
+		ip := addr.String()
 
 		if _, ok := devices[ip]; !ok {
 			devices[ip] = &deviceDetails{}
