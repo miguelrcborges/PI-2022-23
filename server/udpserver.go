@@ -24,8 +24,7 @@ func startUdp() {
 			os.Exit(3)
 		}
 
-		//ip := strings.Split(addr.String(), ":")[0]
-		ip := addr.String()
+		ip := strings.Split(addr.String(), ":")[0]
 
 		if _, ok := devices[ip]; !ok {
 			devices[ip] = &deviceDetails{}
