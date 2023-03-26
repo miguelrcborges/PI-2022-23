@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"os"
-	"fmt"
-	//"strings"
+	"strings"
+	"time"
 )
 
 func startUdp() {
@@ -24,13 +25,20 @@ func startUdp() {
 			os.Exit(3)
 		}
 
-		//ip := strings.Split(addr.String(), ":")[0]
-		ip := addr.String()
+		ip := strings.Split(addr.String(), ":")[0]
 
 		if _, ok := devices[ip]; !ok {
-			devices[ip] = &deviceDetails{}
+			devices[ip] = &deviceDetails{
+				UserName: "To assign",
+				Order:    "Waiting for assignment",
+			}
 		}
 
-		fmt.Printf("%s: %s\n", ip, buf[:n])
+		devices[ip].lastRequest = time.Now()
+		handleRequest(ip, buf[:n])
 	}
+}
+
+func handleRequest(ip string, message []byte) {
+	fmt.Printf("%s: %s\n", ip, message)
 }

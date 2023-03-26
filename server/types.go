@@ -1,13 +1,21 @@
 package main
 
-type position struct {
-	X, Y float64
-}
+import "time"
 
 type deviceDetails struct {
-	Position position
-	Target position
-	Angle float64
+	UserNumber  int64
+	UserName    string
+	Order       string
+	lastRequest time.Time
 }
 
 type devicesMap map[string]*deviceDetails
+
+type UsersQuery struct {
+	Users []User;
+}
+
+type User struct {
+	Name   string
+	Number int64
+}
