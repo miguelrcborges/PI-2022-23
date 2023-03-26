@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"database/sql"
 )
 
 func streamDevicesData(w http.ResponseWriter, r *http.Request) {
@@ -58,8 +60,15 @@ func streamAmountOfDevicesConnected(w http.ResponseWriter, r *http.Request) {
 
 func queryUsers(w http.ResponseWriter, r *http.Request) {
 	var query UsersQuery
+	var rows *sql.Rows
+	var err error
 
-	rows, err := db.Query("Select name, number from users;")
+	params := r.URL.Query()
+	if search := params.Get("s"); search != "" {
+		rows, err = db.Query(fmt.Sprintf("Select name, number from users where name like '%%%s%%' or number like '%%%s%%';", search, search));
+	} else {
+		rows, err = db.Query("Select name, number from users;")
+	}
 	if err != nil {
 		fmt.Fprint(w, err.Error())
 	}
