@@ -17,7 +17,7 @@ body {
 	font-size: 2rem;
 
 	margin: 10rem auto;
-	width: min(90vw, 1000px);
+	width: min(90vw, 1400px);
 };
 
 h1, h2, h3, h4, h5 {
@@ -154,4 +154,10 @@ thead tr {
 
 .close-btn:hover {
 	cursor: pointer;
+}
+
+.user-options {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 }

@@ -65,7 +65,8 @@ func queryUsers(w http.ResponseWriter, r *http.Request) {
 
 	params := r.URL.Query()
 	if search := params.Get("s"); search != "" {
-		rows, err = db.Query(fmt.Sprintf("Select name, number from users where name like '%%%s%%' or number like '%%%s%%';", search, search));
+		wildcarded := "%" + search + "%";
+		rows, err = db.Query("Select name, number from users where name like ? or number like ?;", wildcarded, wildcarded);
 	} else {
 		rows, err = db.Query("Select name, number from users;")
 	}
@@ -87,4 +88,21 @@ func queryUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fmt.Fprint(w, string(json))
+}
+
+func setUser(w http.ResponseWriter, r *http.Request) {
+	params := r.URL.Query()
+	
+	user_number := params.Get("un")
+	ip := params.Get("ip")
+
+	if _, ok := devices[ip]; !ok {
+		fmt.Fprintln(w, "Device not found")
+	}
+
+	row := db.QueryRow("select name, number from users where number = ?;", user_number)
+	row.Scan(&devices[ip].UserName, &devices[ip].UserNumber)
+	devices[ip].Order = "Waiting for assignment"
+
+	fmt.Fprintln(w, "Success")
 }

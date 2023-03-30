@@ -22,6 +22,7 @@ func main() {
 	devices = make(devicesMap)
 
 	http.HandleFunc("/api/get/users", queryUsers)
+	http.HandleFunc("/api/set/user", setUser)
 	http.HandleFunc("/api/get/data", streamDevicesData)
 	http.HandleFunc("/api/get/quantity", streamAmountOfDevicesConnected)
 	http.Handle("/", http.FileServer(http.Dir("static")))

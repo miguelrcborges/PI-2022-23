@@ -6,11 +6,23 @@ const dataElement = document.querySelector("#data");
 const popupContainer = document.querySelector("#popup-container");
 const connectedStream = new EventSource("/api/get/quantity");
 
+let selectedIp;
 let dataStream;
 
 connectedStream.addEventListener('updateDevicesCount', (event) => {
 	connectedElemented.textContent = event.data + " devices connected currently.";
 });
+
+const setUser = async (e) => {
+	const userNumber = e.target.dataset.un;
+
+	const blob = await fetch(`/api/set/user?un=${userNumber}&ip=${selectedIp}`);
+	const text = await blob.text();
+
+	if (text.trim() == "Success") {
+		document.querySelector(".popup").firstChild.click();
+	}
+};
 
 const queryUsers = async () => {
 	const searchQuery = document.querySelector("input").value;
@@ -42,6 +54,8 @@ const queryUsers = async () => {
 		const button_container = document.createElement("td");
 		const button = document.createElement("button");
 		button.textContent = "Set to this patient";
+		button.dataset.un = result.Number;
+		button.addEventListener('click', setUser);
 		button_container.appendChild(button);
 		row.appendChild(button_container);
 
@@ -132,6 +146,56 @@ const userAssignPopup = (e) => {
 	popup.appendChild(table);
 
 	enablePopup(popup);
+
+	selectedIp = e.target.dataset.ip;
+}
+
+const changeOrder = () => {
+	const message = document.querySelector("input").value;
+
+	const blob = await fetch(`/api/set/order?ip=${selectedIp}&o=${encodeURIComponent(message)}`);
+	const text = await blob.text();
+
+	if (text.trim() == "Success") {
+		document.querySelector(".popup").firstChild.click();
+	}
+}
+
+const changeOrderPopup = (e) => {
+	const popup = createPopupElement();
+
+	const h2 = document.createElement("h2");
+	h2.textContent = "Order update";
+	h2.classList.add("near-text");
+	popup.appendChild(h2);
+
+	const p = document.createElement("p");
+	p.textContent = `What order do you want to set to ${e.target.dataset.username}?`
+	p.classList.add("middle-text");
+	popup.appendChild(p);
+
+	const row1 = document.createElement("div");
+	row1.classList.add("row");
+
+	const input = document.createElement("input");
+	input.placeholder = "Go to room xxx";
+	input.classList.add("middle-distance");
+	row1.appendChild(input);
+
+	const searchbutton = document.createElement("button");
+	searchbutton.classList.add("middle-distance");
+	searchbutton.textContent = "Update";
+	searchbutton.addEventListener('click', queryUsers);
+	popup.firstChild.addEventListener('click', () =>
+		searchbutton.removeEventListener('click', queryUsers),
+		{ "once": true });
+	row1.appendChild(searchbutton);
+
+	popup.appendChild(row1);
+
+	enablePopup(popup);
+
+	selectedIp = e.target.dataset.ip;
 }
 
 const processDataStream = (data) => {
@@ -160,6 +224,7 @@ const processDataStream = (data) => {
 		row.appendChild(order);
 
 		const options = document.createElement('td');
+		options.classList.add("user-options");
 		if (data[ip].UserNumber === 0) {
 			const assign = document.createElement('button');
 			assign.textContent = "Assign to a user";
@@ -167,6 +232,20 @@ const processDataStream = (data) => {
 			assign.addEventListener('click', userAssignPopup);
 			assign.dataset.ip = ip;
 			options.appendChild(assign);
+		} else {
+			const change = document.createElement('button');
+			change.textContent = "Change user";
+			change.classList.add("far");
+			change.addEventListener('click', userAssignPopup);
+			change.dataset.ip = ip;
+			options.appendChild(change);
+
+			const order = document.createElement('button');
+			order.textContent = "Change order";
+			order.classList.add("far");
+			order.addEventListener('click', changeOrderPopup);
+			order.dataset.username = data[ip].UserName;
+			options.appendChild(order);
 		}
 		
 		row.appendChild(options);
