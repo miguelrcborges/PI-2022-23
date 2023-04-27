@@ -5,12 +5,14 @@ import (
 	"net"
 	"os"
 	"strings"
+	"strconv"
 	"time"
 )
 
 func startUdp() {
 	buf := make([]byte, 1024)
 	udpserver, err := net.ListenPacket("udp", ":1050")
+
 	if err != nil {
 		fmt.Println("Error creating an UDP server at port 1050")
 		os.Exit(2)
@@ -35,10 +37,32 @@ func startUdp() {
 		}
 
 		devices[ip].lastRequest = time.Now()
-		handleRequest(ip, buf[:n])
+		go handleRequest(udpserver, ip, addr, buf[:n])
 	}
 }
 
-func handleRequest(ip string, message []byte) {
-	fmt.Printf("%s: %s\n", ip, message)
+func handleRequest(conn net.PacketConn, ip string, addr net.Addr, message []byte) {
+	fmt.Println(ip, string(message))
+
+	if devices[ip].orderReceived == 1 {
+		return
+	}
+
+	reply_status, _ := strconv.Atoi(string(message))
+	devices[ip].orderReceived = int8(reply_status)
+
+	if devices[ip].orderReceived == 1 {
+		return
+	}
+
+	var buf []byte
+	if devices[ip].UserName != "To assign" {
+		names := strings.Split(devices[ip].UserName, " ")
+		buf = []byte(names[0] + " " + names[len(names) - 1] + "\n" + devices[ip].Order)
+	} else {
+		buf = []byte(ip + "\n" + devices[ip].Order)
+	}
+
+	conn.WriteTo(buf, addr)
+	fmt.Println("Sent to", ip, string(buf))
 }

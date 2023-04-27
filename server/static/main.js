@@ -19,8 +19,11 @@ const setUser = async (e) => {
 	const blob = await fetch(`/api/set/user?un=${userNumber}&ip=${selectedIp}`);
 	const text = await blob.text();
 
-	if (text.trim() == "Success") {
+	if (text == "Success") {
 		document.querySelector(".popup").firstChild.click();
+	} else {
+		alert("Error sending request. Check console.");
+		console.log(text);
 	}
 };
 
@@ -150,14 +153,17 @@ const userAssignPopup = (e) => {
 	selectedIp = e.target.dataset.ip;
 }
 
-const changeOrder = () => {
+const changeOrder = async () => {
 	const message = document.querySelector("input").value;
 
 	const blob = await fetch(`/api/set/order?ip=${selectedIp}&o=${encodeURIComponent(message)}`);
 	const text = await blob.text();
 
-	if (text.trim() == "Success") {
+	if (text == "Success") {
 		document.querySelector(".popup").firstChild.click();
+	} else {
+		alert("Error sending request. Check console.");
+		console.log(text);
 	}
 }
 
@@ -185,9 +191,9 @@ const changeOrderPopup = (e) => {
 	const searchbutton = document.createElement("button");
 	searchbutton.classList.add("middle-distance");
 	searchbutton.textContent = "Update";
-	searchbutton.addEventListener('click', queryUsers);
+	searchbutton.addEventListener('click', changeOrder);
 	popup.firstChild.addEventListener('click', () =>
-		searchbutton.removeEventListener('click', queryUsers),
+		searchbutton.removeEventListener('click', changeOrder),
 		{ "once": true });
 	row1.appendChild(searchbutton);
 
@@ -236,15 +242,16 @@ const processDataStream = (data) => {
 			const change = document.createElement('button');
 			change.textContent = "Change user";
 			change.classList.add("far");
-			change.addEventListener('click', userAssignPopup);
 			change.dataset.ip = ip;
+			change.dataset.username = data[ip].UserName;
+			change.addEventListener('click', userAssignPopup);
 			options.appendChild(change);
 
 			const order = document.createElement('button');
 			order.textContent = "Change order";
 			order.classList.add("far");
+			order.dataset.ip = ip;
 			order.addEventListener('click', changeOrderPopup);
-			order.dataset.username = data[ip].UserName;
 			options.appendChild(order);
 		}
 		
