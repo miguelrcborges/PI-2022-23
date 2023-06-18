@@ -1,6 +1,6 @@
 # PI-2022-23
 
-In this repository where every code developed
+In this repository every code developed
 for the PI course is available.
 
 Should be noted that lines from 7 to 9 of
