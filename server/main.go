@@ -10,6 +10,7 @@ import (
 
 var db *sql.DB
 var devices devicesMap
+var un2ip map[int64]string
 
 func main() {
 	var err error
@@ -20,6 +21,7 @@ func main() {
 	}
 
 	devices = make(devicesMap)
+	un2ip = make(map[int64]string)
 
 	http.HandleFunc("/api/set/user", setUser)
 	http.HandleFunc("/api/set/order", setOrder)
