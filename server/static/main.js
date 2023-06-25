@@ -10,7 +10,7 @@ let selectedIp;
 let dataStream;
 
 connectedStream.addEventListener('updateDevicesCount', (event) => {
-	connectedElemented.textContent = event.data + " devices connected currently.";
+	connectedElemented.textContent = event.data + " devices currently connected .";
 });
 
 const setUser = async (e) => {

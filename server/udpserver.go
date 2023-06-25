@@ -44,11 +44,15 @@ func startUdp() {
 func handleRequest(conn net.PacketConn, ip string, addr net.Addr, message []byte) {
 	fmt.Println(ip, string(message))
 
+	reply_status, _ := strconv.Atoi(string(message))
+	if reply_status == 2 {
+		devices[ip].orderReceived = 0
+	}
+
 	if devices[ip].orderReceived == 1 {
 		return
 	}
 
-	reply_status, _ := strconv.Atoi(string(message))
 	devices[ip].orderReceived = int8(reply_status)
 
 	if devices[ip].orderReceived == 1 {
