@@ -38,6 +38,12 @@ void setup() {
   screen.setCursor(5, 40);
   screen.println("Waiting for assignment.");
   screen.setCursor(10, 30);
+
+	/* Recover the info in case it was a small poweroff */
+  UDP.beginPacket(serverIP, serverPort);
+  UDP.write("2");
+  UDP.endPacket();
+  delay(5000);
 }
 
 void loop() {
