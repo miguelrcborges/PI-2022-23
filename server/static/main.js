@@ -19,7 +19,7 @@ const setUser = async (e) => {
 	const blob = await fetch(`/api/set/user?un=${userNumber}&ip=${selectedIp}`);
 	const text = await blob.text();
 
-	if (text == "Success") {
+	if (text == "Success\n") {
 		document.querySelector(".popup").firstChild.click();
 	} else {
 		alert("Error sending request. Check console.");
@@ -159,7 +159,7 @@ const changeOrder = async () => {
 	const blob = await fetch(`/api/set/order?ip=${selectedIp}&o=${encodeURIComponent(message)}`);
 	const text = await blob.text();
 
-	if (text == "Success") {
+	if (text == "Success\n") {
 		document.querySelector(".popup").firstChild.click();
 	} else {
 		alert("Error sending request. Check console.");
